@@ -12,8 +12,8 @@ for i in range(9):
     for j in range(9):
         if(max<matrix[i][j]):
             max=matrix[i][j]
-            max_x=i
-            max_y=j
+            max_x=j
+            max_y=i
 
 print(max)
-print(max_x+1,max_y+1)
+print(max_y+1,max_x+1)
