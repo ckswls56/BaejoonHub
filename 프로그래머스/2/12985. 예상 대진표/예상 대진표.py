@@ -6,7 +6,7 @@ def solution(n,a,b):
         a,b = b,a
     
     
-    while  a!=b or (a==b+1 and b%2==1):
+    while  a!=b:
         a = math.ceil(a/2)
         b = math.ceil(b/2)
         answer = answer + 1
