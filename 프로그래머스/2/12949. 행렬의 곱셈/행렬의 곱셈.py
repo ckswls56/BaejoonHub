@@ -1,19 +1,11 @@
+import numpy as np
+
 def solution(arr1, arr2):
-    answer = []
-    
-    # 행렬 arr1의 행의 개수
-    rows_arr1 = len(arr1)
-    # 행렬 arr1의 열의 개수
-    cols_arr1 = len(arr1[0])
-    # 행렬 arr2의 열의 개수
-    cols_arr2 = len(arr2[0])
+    # NumPy 배열로 변환
+    arr1_np = np.array(arr1)
+    arr2_np = np.array(arr2)
 
-    for i in range(rows_arr1):
-        row = []
-        for j in range(cols_arr2):
-            # 각 원소를 계산할 때, zip 함수를 사용하여 효율적으로 계산
-            temp = sum(a * b for a, b in zip(arr1[i], (row[j] for row in arr2)))
-            row.append(temp)
-        answer.append(row)
+    # 행렬 곱셈 수행
+    result_np = np.dot(arr1_np, arr2_np)
 
-    return answer
+    return result_np.tolist()
