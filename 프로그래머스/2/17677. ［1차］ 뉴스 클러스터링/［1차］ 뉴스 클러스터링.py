@@ -23,10 +23,10 @@ def solution(str1, str2):
         else :
             temp_set1.remove(s2)
     
-    for s1 in set1:
-        if s1 in set2:
-            set2.remove(s1)
-            intersection.append(s1)
+    for s2 in set2:
+        if s2 in set1:
+            set1.remove(s2)
+            intersection.append(s2)
     
     
     if len(union)==0 and len(intersection) == 0 :
