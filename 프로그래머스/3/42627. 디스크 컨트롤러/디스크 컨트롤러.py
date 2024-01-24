@@ -1,58 +1,22 @@
-
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
+import heapq as h
 def solution(jobs):
 
-    answer = 0
-    jobs.sort()
-
-    wait = []
-    work = []
-    idx = 0
-    for t in range(0, 500000):
-        while idx<len(jobs) and jobs[idx][0] == t:
-            wait += [jobs[idx]]
-            idx += 1
-
-
-        if work:
-            if work[0][1] == t:
-                w = work.pop()
-                answer += t - w[0]
-
-        if not work:
-            if wait:
-                wait.sort(key=lambda x: -x[1])
-                w2 = wait.pop()
-                work += [[w2[0], t+w2[1]]]
-
+    answer,now,i =0,0,0
+    start = -1
+    heap = []
+    
+    while i < len(jobs):
+        for j in jobs:
+            if start < j[0] <= now:
+                h.heappush(heap,[j[1],j[0]])
+        if heap :
+                current = h.heappop(heap)
+                start = now
+                now += current[0]
+                answer += (now - current[1])
+                i+=1
+        else :
+                now += 1
 
 
     return answer//len(jobs)
