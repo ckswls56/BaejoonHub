@@ -10,8 +10,7 @@ def solution(sequence, k):
             start_index = arr[prefix_sum - k] + 1
             end_index = i
             answer.append((start_index, end_index))
-            min_range = min(min_range, end_index - start_index)
-            if min_range == 0:
+            if end_index - start_index == 0:
                 return (start_index, end_index)
         arr[prefix_sum] = i  # 현재 합의 인덱스를 저장합니다.
 
