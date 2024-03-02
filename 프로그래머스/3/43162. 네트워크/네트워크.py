@@ -3,19 +3,19 @@ def dfs(computers, n, visit):
         return 0
 
     visit[n] = True
-    ret = 1
+    
 
     for i, c in enumerate(computers[n]):
         if c and not visit[i]:
-            ret += dfs(computers, i, visit)
+            dfs(computers, i, visit)
 
-    return ret
+    return 1
 
 def solution(n, computers):
     answer = 0
     visit = [False] * n
 
     for i in range(n):
-        answer += min(1, dfs(computers, i, visit))
+        answer += dfs(computers, i, visit)
 
     return answer
