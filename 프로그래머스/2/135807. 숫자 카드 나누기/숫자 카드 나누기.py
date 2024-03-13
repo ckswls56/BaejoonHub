@@ -1,9 +1,3 @@
-def isDivided(array, n):
-    for a in array:
-        if a % n != 0:
-            return False
-    return True
-
 def isNotDivided(array, n):
     for a in array:
         if a % n == 0:
@@ -25,32 +19,29 @@ def find_common_divisors(array):
         gcd_value = gcd(gcd_value, num)
 
     # 최대공약수의 약수 찾기
-    common_divisors = []
-    for i in range(1, int(gcd_value ** 0.5) + 1):
+    common_divisors = set()
+    for i in range(1,gcd_value):
         if gcd_value % i == 0:
-            common_divisors.append(i)
-            if i != gcd_value // i:  # 제곱수가 아닌 경우에만 추가
-                common_divisors.append(gcd_value // i)
+            common_divisors.add(i)
+            common_divisors.add(gcd_value // i)
 
-    common_divisors.sort()  # 정렬 (선택적)
+    return sorted(common_divisors,reverse=True)  # 정렬하여 반환
 
-    return common_divisors
-
-def binarySearch(arrayA, arrayB):
-    left = 1
-    right = 1000000000
+def search(arrayA, arrayB):
     ret = 0
     for a in find_common_divisors(arrayA):
         if isNotDivided(arrayB,a):
-            ret = max(ret,a)
+            ret = a
+            break
     
     for a in find_common_divisors(arrayB):
         if isNotDivided(arrayA,a):
             ret = max(ret,a)
+            break
     
     
     return ret
 
 def solution(arrayA, arrayB):
-    answer = binarySearch(arrayA, arrayB)
+    answer = search(arrayA, arrayB)
     return answer
