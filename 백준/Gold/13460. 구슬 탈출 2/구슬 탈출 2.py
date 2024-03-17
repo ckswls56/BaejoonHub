@@ -58,10 +58,10 @@ while q:
                 else:
                     red_next = red_next[0] - dir[i][0], red_next[1] - dir[i][1]
             else :
-                visited.add((blue_next, red_next, tuple(dir[i])))
+                continue
         ## blue나 red가 방문하지 않은 곳만 q에 추가
-        if (blue_next, red_next, tuple(dir[i])) not in visited:
-            visited.add((blue_next, red_next,tuple(dir[i])))
+        if (blue_next, red_next) not in visited:
+            visited.add((blue_next, red_next))
             q.append((blue_next, red_next, cnt+1))
 
 print(res)
