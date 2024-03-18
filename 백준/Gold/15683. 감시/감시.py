@@ -133,5 +133,7 @@ for permutation in permutations(cctv):
     for y,x in permutation:
         get_min_maps(temp,y,x)
     answer = min(answer,get_blind_spit(temp))
+    if answer == 0:
+        break
     
 print(answer)
