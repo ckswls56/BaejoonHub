@@ -24,21 +24,23 @@ for i in range(m):
         a[ny][nx] += 1
         moved_cloud.append((ny,nx))
 
-    for cy,cx in cloud :
-        ny,nx = (cy+dy*s)%n,(cx+dx*s)%n
+    visited = [[False] * n for _ in range(n)]
+
+    for cy,cx in moved_cloud :
+        visited[cy][cx] = True
     # 대각선 체크
         for diy,dix in [(-1,-1),(-1,1),(1,1),(1,-1)]:
-            y,x = ny+diy,nx+dix
+            y,x = cy+diy,cx+dix
         
             if 0<=y<n and 0<=x<n and a[y][x] > 0:
-                a[ny][nx] += 1
+                a[cy][cx] += 1
                 
 
     new_cloud = []
   
     for i in range(n):
         for j in range(n):
-            if a[i][j] >= 2 and (i,j) not in moved_cloud:
+            if a[i][j] >= 2 and not visited[i][j]:
                 new_cloud.append((i,j))
                 a[i][j]-=2
     
