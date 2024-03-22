@@ -4,17 +4,14 @@ input = sys.stdin.readline
 def is_possible(s):
     can_use = b
     time = 0
-    for i in range(n):
-        for j in range(m):
-            if ground[i][j] == s:
-                continue
+    for h,v in height.items():
+        if h != s:
+            if h>s:
+                can_use += (h-s)*v
+                time += (h-s)*2*v
             else :
-                if ground[i][j]>s:
-                    can_use += ground[i][j]-s
-                    time += (ground[i][j]-s)*2
-                else :
-                    can_use -= s-ground[i][j]
-                    time += s-ground[i][j]
+                can_use -= (s-h)*v
+                time += (s-h)*v
     
     if can_use >= 0:
         return time
@@ -24,16 +21,16 @@ def is_possible(s):
 
 n,m,b = map(int,input().split())
 ground = [list(map(int,input().split())) for _ in range(n)]
-mins = 256
-maxs = 0
-
+height = {}
 for i in range(n):
     for j in range(m):
-        mins = min(mins,ground[i][j])
-        maxs = max(maxs,ground[i][j])
+        if ground[i][j] in height:
+            height[ground[i][j]] += 1
+        else :
+            height[ground[i][j]] = 1
 
 possible = []
-for s in range(mins,maxs+1):
+for s in range(0,257):
     temp = is_possible(s)
     if temp != -1:
         possible.append((temp,s))
