@@ -15,8 +15,6 @@ def sort_new(matrix, RC):
         sorted_matrix.append(C)
     for i in sorted_matrix:
         i += [0] * (max_count - len(i))  # 가장 긴 길이에 맞춰서 0 추가
-        if len(i) > 100:
-            i = i[:100]
     return sorted_matrix if RC == "R" else list(zip(*sorted_matrix))
 
 result = 0
