@@ -1,73 +1,43 @@
+from itertools import combinations
 from collections import deque
-import itertools
 
-virus = []
-n,m = map(int,input().split())
-direction = [[-1,0],[1,0],[0,1],[0,-1]]
+direction = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
-visited = [[False] * m for _ in range(n)]
-
-def initialize_visited():
-    n = len(visited)
-    m = len(visited[0])
-
+def bfs(arr):
+    q = deque()
+    temp = [row[:] for row in arr]  # 깊은 복사 대신 행 단위로 얕은 복사
     for i in range(n):
         for j in range(m):
-            visited[i][j] = False
+            if temp[i][j] == 2:
+                q.append((i, j))
     
+    while q:
+        y, x = q.popleft()
+        for dy, dx in direction:
+            ny, nx = y + dy, x + dx
+            if 0 <= ny < n and 0 <= nx < m and temp[ny][nx] == 0:
+                temp[ny][nx] = 2
+                q.append((ny, nx))
+    
+    safe = sum(row.count(0) for row in temp)
+    return safe
 
+n, m = map(int, input().split())
+board = [list(map(int, input().split())) for _ in range(n)]
 
+zeros = [(i, j) for i in range(n) for j in range(m) if board[i][j] == 0]
+walls = list(combinations(zeros, 3))
+ans = 0
 
+for wall in walls:
+    for y, x in wall:
+        board[y][x] = 1
+    
+    safe_area = bfs(board)
+    ans = max(ans, safe_area)
+    
+    # 벽을 다시 원래 상태로 복구
+    for y, x in wall:
+        board[y][x] = 0
 
-arr = []
-
-for i in range(n):
-        arr.append(list(map(int,input().split())))
-
-for i in range(n):
-        for j in range(m) :
-                if arr[i][j] == 2 :
-                        point = i,j
-                        virus.append(point)
-
-min = 0           
-
-zeros = []
-for i in range(len(arr)):
-    for j in range(len(arr[i])):
-        if arr[i][j] == 0:
-            zeros.append((i, j))
-
-combinations = list(itertools.combinations(zeros, 3))
-
-for comb in combinations:
-    copy_arr = [row[:] for row in arr]  # arr 배열을 복사하여 변경된 배열을 저장
-
-    for i, j in comb:
-        copy_arr[i][j] = 1
-
-    initialize_visited()
-    for p in virus :
-        q= deque()
-        q.append(p)
-
-        while(q) :
-            c = q.pop()
-            x,y = c[1],c[0]
-            visited[y][x] = True
-            copy_arr[y][x] = 2
-
-            for dx,dy in direction :
-                if( x+dx >= 0 and x+dx < m and y+dy >= 0 and y+dy < n ):
-                        if(visited[y+dy][x+dx] == False and copy_arr[y+dy][x+dx] == 0):
-                                next = y+dy,x+dx
-                                q.append(next)
-    sum = 0
-    #print(copy_arr)
-    for i in copy_arr :
-         sum += i.count(0)
-    if sum > min :
-          min = sum
-
-
-print(min)
+print(ans)
