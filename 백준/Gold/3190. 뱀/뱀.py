@@ -1,43 +1,58 @@
-from collections import deque
 
-n = int(input())
+direction = [(0,1),(1,0),(0,-1),(-1,0)]
+
+n= int(input())
 k = int(input())
-board = [[False]*101 for _ in range(101)]
-
-for i in range(k):
+apples = []
+for _ in range(k):
     y,x = map(int,input().split())
-    board[y][x] = True
-
+    apples.append((y,x))
+    
 l = int(input())
 command = {}
-
-for i in range(l):
-    s = input().split()
-    x,c = int(s[0]),s[1]
+for _ in range(l):
+    x,c = input().split()
+    x = int(x)
     command[x] = c
+    
+    
+    
 
-dir = [(0,1),(1,0),(0,-1),(-1,0)] # 오른쪽,밑,왼쪽,위
 
-snake = deque([(1, 1)])  # 뱀의 머리 위치를 저장하는 deque
-time = 0
+snake = []
+
+snake.append((0,0))
+
+
 d = 0
-while True:
-    time += 1
-    y, x = snake[-1]  # 뱀의 머리 위치
-    ny, nx = y + dir[d][0], x + dir[d][1]  # 다음 머리 위치
-    if 1 <= ny <= n and 1 <= nx <= n and (ny, nx) not in snake:  # 벽에 부딪히거나 자기 자신의 몸통과 충돌하지 않는 경우
-        snake.append((ny, nx))  # 뱀의 머리 위치 갱신
-        if not board[ny][nx]:  # 사과가 없는 경우
-            snake.popleft()  # 꼬리 자르기
-        else:
-            board[ny][nx] = False  # 사과를 먹은 경우 보드에서 사과 제거
-    else:  # 벽에 부딪히거나 자기 자신의 몸통과 충돌한 경우
+
+ny,nx = 1,1
+
+t = 1
+
+while snake:
+    
+    dy,dx = direction[d][0],direction[d][1]
+    ny,nx = ny+dy,nx+dx
+    
+    if 1<=ny<=n and 1<=nx<=n and (ny,nx) not in snake:
+        snake.append((ny,nx))
+    else :
         break
     
-    if time in command:
-        if command[time] == 'L':
-            d = (d+3) % 4
-        else:
-            d = (d+1) % 4
-
-print(time)
+    if (ny,nx) in apples:
+        apples.remove((ny,nx))
+    else:
+        snake.pop(0)
+    
+    
+    
+    
+    if command.get(t,-1) == 'L':
+        d = (d-1) %4
+    elif command.get(t,-1) == 'D':
+        d = (d+1) %4
+    t+=1
+    
+    
+print(t)
