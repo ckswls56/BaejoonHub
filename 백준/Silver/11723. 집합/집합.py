@@ -1,29 +1,25 @@
 import sys
-arr = [False] * 20
-
 m = int(input())
 
-while(m):
-    m-=1
-    string = sys.stdin.readline().rstrip().split()
-    op = string[0]
-    if string[0] != "all" and string[0] != "empty" :
-        x = int(string[1])
+s = 0
 
-    if op == "add" :
-        arr[x-1] = True
-    elif op == "remove" :
-        arr[x-1] = False
-    elif op == "check" :
-        if arr[x-1] == True :
-            print(1)
-        else :
-            print(0)
-    elif op == "toggle" :
-        arr[x-1] = not arr[x-1]
-    elif op =="all":
-        for i in range(20):
-            arr[i]= True
-    else :
-        for i in range(20):
-            arr[i] = False
+for _ in range(m):
+    strings = sys.stdin.readline().rstrip()
+    
+    try :
+        c,v = strings.split()
+        v = int(v)
+    
+        if c == 'add':
+            s |= (1<<v)
+        elif c == 'remove':
+            s &= ~(1<<v)
+        elif c == 'check':
+            print(1 if s & (1<<v) else 0)
+        elif c == 'toggle':
+            s ^= (1<<v)
+    except:
+        if strings == 'all':
+            s = (1<<21)-1
+        elif strings == 'empty':
+            s = 0
