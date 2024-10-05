@@ -1,53 +1,103 @@
+
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+from collections import defaultdict
+
+
 def solution(points, routes):
-    total_collisions = 0
-    point_map = {}
-    robot_routes = []
+    # 포인트 번호에 따른 좌표 정보 저장
+    point_dict = {i + 1: (points[i][0], points[i][1]) for i in range(len(points))}
 
-    # Create a dictionary mapping point numbers to their coordinates
-    for index in range(len(points)):
-        point_map[index + 1] = points[index]
+    # 시간별 좌표마다 로봇이 도착한 횟수를 저장하는 딕셔너리
+    time_position_count = defaultdict(int)
 
-    # Generate robot movement paths
+    # 로봇들의 이동 경로 처리
     for route in routes:
-        robot_path = []
-        current_position = point_map[route[0]].copy()  # Copy the starting point
-        for j in range(1, len(route)):
-            destination = point_map[route[j]].copy()  # Get the destination point
-            # Move along the x-axis
-            while current_position[0] != destination[0]:
-                temp_position = current_position.copy()  # Copy current position
-                robot_path.append(temp_position)
-                if destination[0] > current_position[0]:
-                    current_position[0] += 1
+        current_time = 0
+
+        # 0초일 때 첫 포인트에 도착하는 것을 기록
+        start_point = point_dict[route[0]]
+        time_position_count[(current_time, start_point[0], start_point[1])] += 1
+
+        for i in range(len(route) - 1):
+            start = point_dict[route[i]]
+            end = point_dict[route[i + 1]]
+
+            # 현재 위치에서 목표 위치로 이동 (r 좌표를 먼저 이동, 그 다음 c 좌표 이동)
+            r_start, c_start = start
+            r_end, c_end = end
+
+            # r 좌표 이동
+            while r_start != r_end:
+                if r_start < r_end:
+                    r_start += 1
                 else:
-                    current_position[0] -= 1
-            # Move along the y-axis
-            while current_position[1] != destination[1]:
-                temp_position = current_position.copy()
-                robot_path.append(temp_position)
-                if destination[1] > current_position[1]:
-                    current_position[1] += 1
+                    r_start -= 1
+                current_time += 1
+                time_position_count[(current_time, r_start, c_start)] += 1
+
+            # c 좌표 이동
+            while c_start != c_end:
+                if c_start < c_end:
+                    c_start += 1
                 else:
-                    current_position[1] -= 1
+                    c_start -= 1
+                current_time += 1
+                time_position_count[(current_time, r_start, c_start)] += 1
 
-        robot_path.append(current_position)
-        robot_routes.append(robot_path)  # Store the robot's route
+    # 충돌 횟수 계산
+    danger_count = 0
+    for value in time_position_count.values():
+        if value > 1:
+            danger_count += 1  # 충돌은 도착한 로봇 수 - 1 번 발생
 
-    empty_routes = 0  # Check if all routes are empty
-    while empty_routes != len(routes):  # Terminate if all robot routes are empty
-        current_positions = []  # Store robot positions at the same time
-        collision_points = []  # Store collision coordinates
-        empty_routes = 0
-        for path in robot_routes:
-            if len(path) == 0:  # If the route is empty
-                empty_routes += 1
-                continue
-            position = path.pop(0)
-            # Check for collisions
-            if position in current_positions and position not in collision_points:  # New collision
-                collision_points.append(position)
-                total_collisions += 1
-            else:
-                current_positions.append(position)
-
-    return total_collisions
+    return danger_count
