@@ -36,16 +36,16 @@ def solution(expressions):
             answer.append(e)
 
     for n in range(max_format + 1, 10):  # Checking possible bases
-        check = 1
+        check = True
         for h in hint:
             num1, func, num2, _, ans = h.split(" ")
             num1, num2, ans = int(num1,n), int(num2,n), int(ans,n)
 
             if (func == '+') and (num1 + num2 != ans): 
-                check = 0
+                check = False
                 break
             if (func == '-') and (num1 - num2 != ans): 
-                check = 0
+                check = False
                 break
 
         if check:  # Valid base
@@ -64,8 +64,8 @@ def solution(expressions):
                 ans_set.add(str(TenToN(a, num_1 - num_2)))
 
         if len(ans_set) == 1:  # Single valid answer
-            answer[idx] = ' '.join([num1, func, num2, _, list(ans_set)[0]])
+            answer[idx] = answer[idx].replace('X',list(ans_set)[0])
         else:  # Multiple possible answers
-            answer[idx] = ' '.join([num1, func, num2, _, "?"])
+            answer[idx] = answer[idx].replace('X','?')
 
     return answer
