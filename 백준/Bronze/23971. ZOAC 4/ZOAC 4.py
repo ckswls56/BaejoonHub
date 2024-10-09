@@ -1,10 +1,10 @@
-h,w,n,m = map(int,input().split())
+h, w, n, m = map(int, input().split())
 
-direction = [(-1,0),(1,0),(0,-1),(0,1)]
+# Calculate the number of steps needed in both dimensions
+rows = (h + n) // (n + 1)
+cols = (w + m) // (m + 1)
 
-ans = 0
-for i in range(0,h,n+1):
-    for j in range(0,w,m+1):
-        ans += 1
-        
-print(ans)   
+# The answer is the product of rows and columns
+ans = rows * cols
+
+print(ans)
