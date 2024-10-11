@@ -1,10 +1,11 @@
+import sys
 
 def install_bomb(i,j,t):
     a[i][j] = t+3
 
-r,c,n = map(int,input().split())
+r,c,n = map(int,sys.stdin.readline().split())
 
-board = [list(input()) for _ in range(r)]
+board = [list(sys.stdin.readline()) for _ in range(r)]
 
 a = [[-1]*c for _ in range(r)]
 
