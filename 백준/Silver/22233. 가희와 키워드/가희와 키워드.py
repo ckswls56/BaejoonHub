@@ -5,9 +5,7 @@ for _ in range(n):
     d.add(sys.stdin.readline().rstrip())
     
 for _ in range(m):
-    arr = list(sys.stdin.readline().rstrip().split(','))
-    for a in arr:
-        if a in d:
-            d.remove(a)
+    arr = set(sys.stdin.readline().rstrip().split(','))
+    d-=arr
     
     print(len(d))
