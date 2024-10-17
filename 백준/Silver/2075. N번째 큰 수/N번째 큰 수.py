@@ -1,5 +1,5 @@
 import heapq as h
-
+import sys
 
 n = int(input())
 
@@ -7,7 +7,7 @@ n = int(input())
 heap = []
 
 for _ in range(n):
-    for a in map(int,input().split()):
+    for a in map(int,sys.stdin.readline().rstrip().split()):
         if len(heap) < n:
             h.heappush(heap,a)
         else:
