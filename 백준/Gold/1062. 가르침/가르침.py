@@ -31,8 +31,7 @@ def solve(n, k):
 
     # 추가 배울 문자가 없는 경우
     if len(uniqueSet) <= k - 5:
-        return cnt + len(uniqueList)
-
+        return n
     maxCnt = 0
 
     # 추가 문자 조합으로 최대 읽을 수 있는 단어 수 계산
